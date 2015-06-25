@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -22,11 +23,17 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import devedroid.opensurveyor.data.LocationData;
 import devedroid.opensurveyor.data.Marker;
+import devedroid.opensurveyor.data.POI;
 import devedroid.opensurveyor.data.PictureMarker;
 import devedroid.opensurveyor.data.Session;
 import devedroid.opensurveyor.data.SessionManager;
+import devedroid.opensurveyor.data.TextMarker;
+import devedroid.opensurveyor.data.Tracker;
 import devedroid.opensurveyor.presets.CameraPreset;
+import devedroid.opensurveyor.presets.POIPreset;
+import devedroid.opensurveyor.presets.TextPreset;
 
 public class MainActivity extends SherlockFragmentActivity implements
 		SessionManager {
@@ -41,6 +48,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 	private static final String PREF_UI = "ui";
 	private static final String PREF_SESSION = "session";
+
+	private Tracker tracker = new Tracker();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +83,21 @@ public class MainActivity extends SherlockFragmentActivity implements
 		}
 	}
 
-	private void setFragment(int itemPos) {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode == KeyEvent.KEYCODE_0) {
+
+			Utils.logd(this, "KEY_0 pressed. Add text marker.");
+            addMarker(new POI(new POIPreset("Test")));
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private void setFragment(int itemPos) {
 		Fragment newFragment = null;
 		Utils.logi("MainActivity", "setFragment "+itemPos);
 		if (itemPos == 0) {
@@ -107,8 +130,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 			@Override
 			public void onLocationChanged(Location location) {
-				// if( hw.getLastLocation()==null )
-				// invalidateOptionsMenu();
+				tracker.addPoint(new LocationData(location));
 			}
 
 		});
@@ -117,6 +139,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onPause() {
 		super.onPause();
+
 		hw.stop();
 		hw.clearListeners();
 		Utils.logd(this, "State saving should be here");

@@ -15,6 +15,7 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,12 +97,12 @@ public class ButtonUIFragment extends SherlockFragment implements SessionListene
 		lvHist.setSelection(histAdapter.getCount() - 1);
 		TextView empty = (TextView) root.findViewById(android.R.id.empty);
 		lvHist.setEmptyView(empty);
-		lvHist.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+		lvHist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> list, View view, int pos,
-					long id) {
-				if(pos >= parent.getMarkerCount()) return;
+									long id) {
+				if (pos >= parent.getMarkerCount()) return;
 				Marker m = parent.getMarker(pos);
 				showPropWinIfRequired(m, false);
 			}
@@ -249,6 +250,7 @@ public class ButtonUIFragment extends SherlockFragment implements SessionListene
 				registerForContextMenu(bt);
 			flow.addView(bt);
 		}
+
 	}
 
 	@Override
