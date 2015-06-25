@@ -54,7 +54,7 @@ public class MarkerEditOverlay extends Overlay {
 	@Override
 	protected void draw(Canvas arg0, MapView map, boolean arg2) {
 		Point pt = new Point();
-		pt = map.getProjection().toMapPixels(this.pt, pt);
+		pt = map.getProjection().toPixels(this.pt, pt);
 		//marker.setBounds(pt.x, pt.y, pt.x+marker.get, bottom)
 		//marker.draw(arg0);
 		arg0.drawBitmap(marker, pt.x-mw2, pt.y-mh2, null);

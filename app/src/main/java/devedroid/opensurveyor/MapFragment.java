@@ -39,8 +39,7 @@ import devedroid.opensurveyor.data.Marker;
 import devedroid.opensurveyor.data.TextMarker;
 import devedroid.opensurveyor.data.SessionManager.SessionListener;
 
-public class MapFragment extends SherlockFragment implements SessionListener,
-		LocationListener {
+public class MapFragment extends SherlockFragment implements SessionListener {
 
 	private MapView map;
 	private ItemizedIconOverlay<MarkerOverlayItem> markersOvl;
@@ -104,7 +103,7 @@ public class MapFragment extends SherlockFragment implements SessionListener,
 		map.setMultiTouchControls(true);
 		// map.setMinZoomLevel(16);
 		map.setMaxZoomLevel(20);
-		map.getController().setZoom(3);
+		map.getController().setZoom(16);
 		map.getController().setCenter(new GeoPoint(0, 0));
 		markers = new ArrayList<MarkerOverlayItem>();
 		markersOvl = new ItemizedIconOverlay<MarkerOverlayItem>(parent, markers,
@@ -190,11 +189,12 @@ public class MapFragment extends SherlockFragment implements SessionListener,
 	@Override
 	public void onResume() {
 		super.onResume();
+		/*
 		myLoc.enableMyLocation();
 		Hardware hw = parent.getHardwareCaps();
 		if (hw.canGPS()) {
 			hw.addListener(this);
-		}
+		}*/
 	}
 
 	@Override
@@ -208,8 +208,10 @@ public class MapFragment extends SherlockFragment implements SessionListener,
 		//Utils.logi("Map", "Saved "+map.getMapCenter().getLatitudeE6() +"/"+ map.getMapCenter().getLongitudeE6() );
 		ed.commit();
 
+		/*
 		myLoc.disableMyLocation();
 		parent.getHardwareCaps().removeListener(this);
+		*/
 		super.onPause();
 	}
 
@@ -252,7 +254,7 @@ public class MapFragment extends SherlockFragment implements SessionListener,
 
 		public void updateFromMarker() {
 			LocationData loc = marker.getLocation();
-			super.getPoint().setCoordsE6( (int)(loc.lat*1e6), (int)(loc.lon*1e6) );
+			((GeoPoint)super.getPoint()).setCoordsE6( (int)(loc.lat*1e6), (int)(loc.lon*1e6) );
 		}
 		
 	}
@@ -269,6 +271,7 @@ public class MapFragment extends SherlockFragment implements SessionListener,
 	public void onSessionFinished() {
 	}
 
+	/*
 	@Override
 	public void onLocationChanged(Location location) {
 		track.addPoint(new GeoPoint(location));
@@ -286,7 +289,7 @@ public class MapFragment extends SherlockFragment implements SessionListener,
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-	}
+	}*/
 	
 	private void finishMoveMarker(boolean cancel) {
 		if(!cancel) {

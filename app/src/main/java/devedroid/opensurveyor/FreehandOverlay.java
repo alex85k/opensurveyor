@@ -78,7 +78,7 @@ class FreehandOverlay extends Overlay {
 			Path pth = new Path();
 			boolean first = true;
 			for (IGeoPoint gpt : path) {
-				pt = map.getProjection().toMapPixels(gpt, pt);
+				pt = map.getProjection().toPixels(gpt, pt);
 				if (!first)
 					pth.lineTo(pt.x, pt.y);
 				else

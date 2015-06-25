@@ -46,7 +46,7 @@ class DrawingsOverlay extends Overlay {
 				Path pth = new Path();
 				boolean first = true;
 				for (IGeoPoint gpt : path) {
-					pt = map.getProjection().toMapPixels(gpt, pt);
+					pt = map.getProjection().toPixels(gpt, pt);
 					if (first)
 						pth.moveTo(pt.x, pt.y);
 					else
